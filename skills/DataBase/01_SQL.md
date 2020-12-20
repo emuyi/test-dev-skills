@@ -41,7 +41,7 @@ source xx/xx/test_db.sql
    select ename, sal from emp where sal > 1000  and sal < 2000;
    
    示例:找出薪资在1000,2000(包含) 且名字以a开头的员工.
-   select ename, sal from emp where (sal between 1000 and 2000) and   ename like 'a%';
+   select ename, sal from emp where (sal between 1000 and 2000) and ename like 'a%';
    tip：
       1. 当不确定条件优先级的时候,用小括号括起来,小括号的优先级最高.
       2. a% 以a开头的, %b 以b结尾的, %c% 包含c的, %\_% 包含_的,特殊符号要注意使用 
@@ -63,10 +63,10 @@ source xx/xx/test_db.sql
     tip：
         多个字段排序，当第一个字段无法完成排序的情况下（有相等的情况），后续的
         字段才有意义。
-1.4 分组 group by 语句
+1.4 分组(聚合) group by 语句
  	group by 根据某个字段，某些字段进行分组
  	having 是对分组后的数据进行再次的过滤
- 	关于分组函数 count sum avg max min，分组函数一般是对group by分组后的数据进行处理, 当       没有group by时,整张表看做是一组。分组函数具有以下的特点:
+ 	关于分组函数 count sum avg max min，分组函数一般是对group by分组后的数据进行处理, 当没有group by时,整张表看做是一组。分组函数具有以下的特点:
    1. 分组函数(类似归约函数) 会忽略 null 
  	  select sum(comm) from emp; 
  	    +-----------+
@@ -109,9 +109,7 @@ source xx/xx/test_db.sql
       from --> where --> group by --> having --> select --> order by
 ```
 
-------
-
-##### 2. 多表查询 ---- 连接查询
+##### 2. 连接查询
 
 ```sql
 2.1 连接查询分类
@@ -211,11 +209,11 @@ source xx/xx/test_db.sql
 +-------+--------+
 
 	""
-	注意SQL存在问题! 员工 king 也就是大老板的数据没了, 这说明了内连接只显     示匹配到的数据,没有匹配到的不显示.
+	注意SQL存在问题! 员工 king 也就是大老板的数据没了, 这说明了内连接只显示匹配到的数据,没有匹配到的不显示.
 
 
 2.6 外连接和内连接的区别
-	外连接: 常分主副表, 主要去查询主表中的数据,捎带查询副表中的数据,当副表	  中的数据没有和主表相匹配的数据,会用 null 进行填充,也就是说外连接尽量保
+	外连接: 常分主副表, 主要去查询主表中的数据,捎带查询副表中的数据,当副表中的数据没有和主表相匹配的数据,会用 null 进行填充,也就是说外连接尽量保
 	正主表数据的完整性.
 	内连接: 首先内连接的表没有主副之分, 关系都是对等的.内连接的表根据某种关
     系连接会将匹配到的信息显示出来,没有匹配到的就不显示,也就是说内连接会有
@@ -243,7 +241,7 @@ source xx/xx/test_db.sql
    
    示例一: 找出那个部门没有员工
    select
-    	d.dname, d.loc
+    	d.*
    from 
    	    emp e
    right join
@@ -251,11 +249,98 @@ source xx/xx/test_db.sql
    on
       e.deptno = d.deptno
    where
-   	  e.ename is null;
+   	  e.empno is null;
     
     示例二：找出每一个员工的部门名称及工资等级。
-    
+    select
+    	e.ename, d.dname, s.grade
+    from
+    	emp e
+    left join
+    	dept d
+    on 
+    	e.deptno = d.deptno
+    left join
+    	salgrade s
+     on
+     	e.sal between s.losal and s.hisal;
+     
 ```
+
+##### 3. 子查询
+
+````sql
+什么是子查询? 通俗理解就是select语句中嵌套select语句. 子查询语句可以放到 select 语句中, where 语句中
+或者 from 语句中.
+1. 子查询放在 where 语句中
+	示例:找出高于平均工资的员工信息
+	select ename, sal from emp where sal > (select avg(sal) from emp);
+2. !!子查询放在 from 语句中(比较常用)
+	即子查询的数据结果被当做临时表使用.
+	示例一:找出每个部门平均薪水的薪资等级.
+    select 
+        tmp. deptno, tmp.avgsal, s.grade
+    from 
+        (select deptno, avg(sal) as avgsal from emp group by deptno) tmp
+    join
+        salgrade s
+    on tmp.avgsal between s.losal and s.hisal;
+    
+    示例二:找出每个部门平均的薪水等级, 要求显示部门名称(注意理解)
+    
+    select 
+    	d.deptno, d.dname, avg(t.grade) as '平均薪资等级'
+    from 
+    	dept d
+    join 
+    	(select e.deptno, s.grade from emp e join salgrade s on e.sal between s.losal and hisal) t
+    on 
+    	d.deptno = t.deptno
+    group by 
+    	d.deptno;
+ 
+3. 子查询放在 select 语句中
+	示例:找出员工名和员工所在的部门名
+	连表查询:select e.ename, d.dname from emp e join dept d on e.deptno = d.deptno;
+	使用子查询:
+	select e.ename, (select dname from dept d where e.deptno =  d.deptno)  from emp e;
+    通俗理解就是把一个查询语句的结果当成另外一个查询语句的条件. 有点像嵌套的加条件的嵌套for循环
+  
+````
+
+##### union limit distinct
+
+```sql
+1.union: 将多个结果集合并起来(了解) 
+示例: 工作岗位是salesman和manager的员工
+select ename from emp where job in ('SALESMAN', 'MANAGER');
+
+使用 union:
+select ename from emp where job = 'salesman'
+union
+select ename from emp where job = 'MANAGER';  # 注意 union的时候, 双方的字段个数要一致
+
+2.distinct: 对查询结果去重
+select distinct job from emp;
+select count(distinct job) from emp;
+
+3.limit 分页
+limit 往往是最后执行,即提取已经过滤,分组,排序后的数据的某些数据.
+limit index size, index是从0开始的索引,当index不写的时候,是取前size条
+web分页的计算:
+	def func(page_no, page_size):
+		return limit page_size * (page_no - 1)
+```
+
+#### 二. DML&DDL
+
+```sql
+
+```
+
+
+
+
 
 
 
