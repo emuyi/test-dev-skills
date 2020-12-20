@@ -1,6 +1,6 @@
-SQL 是一种结构化查询语言. 由于 SQL 的重要性, 将其单独提取出来, 方便今后工作查询使用. 将以 MySQL
+SQL 是一种结构化查询语言. 根据实用性, 将CRUD部分单独提取出来, 方便今后工作查询使用. 将使用MYSQL
 
-为例来展示 SQL 语法.
+来演示.
 
 #### SQL 的分类
 
@@ -332,13 +332,22 @@ web分页的计算:
 		return limit page_size * (page_no - 1)
 ```
 
-#### 二. DML&DDL
+#### 二. DML: insert  delete update
 
 ```sql
-
+1. insert 注意保持和字段顺序类型个数保持一致就可以,如果不一致,缺少的字段为null
+insert into 表名 (字段1, 字段2...) values (v1, v2...)
+insert into 表名 values(...)  
+insert into 表名 values(),(),()...
+2. update 根据条件更新, 没有条件更新整张表
+update 表名 set 字段1=xx,字段2=yy where ...
+如: update dept set dname = 'PR', loc = 'SHANGHAI' where deptno = 10;
+3. delete from 表名 where 条件 没有条件删除整张表
+    # 清空大型表数据,可以使用 truncate table 表名,它会清空数据,保留表结构.注意一定一定要谨慎,
+    因为truncate清楚的数据不能回滚.
 ```
 
-
+剩下几种类型请参看 MySQL 笔记.
 
 
 
