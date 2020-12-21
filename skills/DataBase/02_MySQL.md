@@ -190,11 +190,6 @@ msyqldump 数据库 表 > 路径/xx.sql -u "user" -p "passwd"; 备份指定表
 导入: source xx.sql
 ```
 
-#### pymysql
-
-```python
-
-```
 
 
 
