@@ -53,3 +53,10 @@ def test_five():
 @pytest.mark.xfail(strict=True)
 def test_six():
     assert 1
+
+
+# 自定义标记mark执行部分用例
+
+@pytest.mark.webtest
+def test_web():
+    assert 1

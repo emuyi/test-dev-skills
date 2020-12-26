@@ -10,7 +10,7 @@
 二、fixture
     用来处理测试用例执行前环境的初始化以及执行后环境的恢复。相比着 xUnit 架构将 setUp和 tearDown 集成到测试用例的方式，
     pytest.fixture 的使用更加灵活且功能更加强大。
-    1. pytest.fixture 是一个装饰器，目前只能用来装饰测试函数和测试方法，如果给测试类加fixture可以使用mark.usefixtures
+    1. pytest.fixture 是一个装饰器，目前只能用来装饰函数和方法，如果给测试类加fixture可以使用mark.usefixtures
        fixture 将以形式参数的形式表明是某个测试用例或者fixture的依赖，并且将结果以实参的形式传递给测试用例。
     2. fixture 表示环境的初始化(setUp)。如果要处理环境的销毁和恢复(tearDown)，需要使用 yield，yield后面的语句是销毁的逻辑（实际上是利用了协程
     的原理，遇到 yield fixture挂起，执行测试用例，用例执行完毕，激活fixture协程进行环境的恢复） 示例：yield & addfinalizer
@@ -29,7 +29,7 @@
     7. conftest.py 实现 fixture的跨文件共享，即定义在 conftest.py 中的 fixture 可以直接拿来用，不用再进行导入。
        项目级别的 contest.py 被整个项目共享，当然每个 package也可以有自己的 conftest.py
     8. ！！！！参数化的 fixture
-        当测不同参数选项的功能时，常用参数化的fixture来做初始化。即 fixture(params=[arg1, arg2]) 有点类型一个for 遍历这个参数列表
+        当测不同参数选项的功能时，常用参数化的fixture来做初始化。即 fixture(params=[arg1, arg2]) 有点类似一个for 遍历这个参数列表
         分别执行fixture和用例。示例：参数化的fixture
     9. fixture的参数之一：ids, 在参数化fixture中，可以使用命令行 -k 参数配置 ids来指定执行某个用例。 示例：指定执行某个用例
 
@@ -44,7 +44,7 @@
             标记一个用例为期望失败，即当用例执行失败后，不显示用例 fail，而是 xFail， 当用例执行没问题，标记为 xPass
             condition: 在某种条件下进行标记
             reason: 标记的理由
-            run=False：直接标记，不执行测试用例
+            run=False：直接标记，不执行测试用例  等同于 pytest.xfail(reason=xxx)
             strict=True：即便是用例执行成功了，也报用例执行失败即 Fail。
             raises：可以指定具体的异常类型。
         4. pytest.mark.parametrize('test_input, expected', [("1+2", 3), ("3+4", 7), ('5+6', 12)])
@@ -67,8 +67,11 @@
     -q 输出简单的执行信息
     --capture=no 实时显示执行信息
 、其他
-    处理被测功能抛异常的情况
+    1、处理被测功能抛异常的情况
     pytest.raises(ErrorType, match=regex)
+
+    2、自定义标记mark只执行部分用例
+        pytest.mark.webtest / 命令行 -v “webtest”  并且支持逻辑上的 and not or
 """
 import pytest
 
