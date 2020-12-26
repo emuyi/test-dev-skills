@@ -1,0 +1,166 @@
+标签：
+	语义化标签：<p></p>.......
+	无语义标签：<div></div>  <span></span>
+
+HTML5:
+	<header></header>  网页头部标签，作用等同于div，但具备了语义化
+	<section></section> 区域标签
+	<footer></footer> 底部标签
+	<aside></aside> 侧边区域
+	
+-----------------------------------------------------------------------	
+	<ul>
+		<li>无序列表</li>
+	</ul>
+	
+	<ol>
+		<li>有序列表</li>
+	</ol>
+-----------------------------------------------------------------------	
+	<table border=1>
+        <caption>表格标题</caption>
+        <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>密码</th>
+        </tr>
+        <tr>
+            <td>01</td>
+            <td>ellen</td>
+            <td>123</td>
+        </tr>
+    </table>
+	
+	# <thead> <tbody> <tfoot>
+	 <table border=1>
+        <caption>表格标题</caption>
+        <thead>
+             <tr>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>密码</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>01</td>
+                <td>ellen</td>
+                <td>123</td>
+            </tr>
+        </tbody>
+    </table>
+	
+-----------------------------------------------------------------------		
+	<img src='xx.png', alt='下载失败时的替换文本' title='提示文本'/> 图片标签
+	<a href='xx.com' title='鼠标划过时显示的文本' target='_self(_blank)'>链接文本</a>
+-------------------------表单-----------------------------------------	
+<form method="post" action="login.py">
+	<input type="text" name="username" placeholder="username">
+</form>
+
+	input标签type属性：
+		text：文本框
+		password：密码框
+		submit：提交按钮
+		button: 按钮
+		checkbox：复选框
+		radio：单选框
+		reset：重置按钮，清空表单中的数据
+		
+		email：邮箱框 number：数字框 url：网址框（标签自身带有一些限制，但是太简单）
+	
+	评论区
+	<textarea rows="行数" cols="列数"></textarea>
+	
+	label 常和表单中的标签搭配使用
+	<label for="表单中标签的id"></label> 
+	
+	单选框
+	<input type="radio" value="1" name="gender" checked />
+	<input type="radio" value="2" name="gender" />
+	
+	下拉框
+	<select>
+		<option value="看书" selected>看书</option>
+		<option value="旅游">旅游</option>
+		<option value="运动">运动</option>
+		<option value="购物">购物</option>
+	</select>
+-----------------------------------------------------------------------		
+	<br/> 换行
+	&nbsp; 空格
+	<hr/> 水平分割线
+
+==========================css选择器===================================
+.nav-bar 类名是 nav-bar 的所有标签
+#usename  id 是 username的所有标签
+p     所有的p标签
+p,h1  找到所有的p标签和h1标签
+div p  div内部的所有p标签
+div>p 父元素是div的每个p标签
+div+p  div紧邻的每个p标签
+p~ul 相同父元素，p标签后面的所有 ul 标签
+a[target]  有target属性的所有a标签
+a[target=_blank]  target属性是_blank的所有a标签
+
+!!! 灵活组合多个选择器。
+
+
+
+
+
+--------------了解----------------------
+a[href^="https"] 选择href属性以https开头所有a标签
+a[href$="xxx"]    以 xxx 结尾的所有a标签
+a[href*="google"] 包含 google 的所有a标签
+--------------------------------------------------
+p:first-child 如果p标签是它父元素的一个子标签，那么选中
+-----------------------------------------------
+[title~=flower] title属性中包含flower的所有标签
+[title|=flower] title属性中以flower开头的所有标签
+-----------------------------------------------
+a:link 所有未被访问的链接
+a:visited 选择所有已被访问的链接
+a:active 选择活动链接
+a:hover 选择鼠标指针位于其上的链接
+-----------------------------------------------
+input:focus 获得每个焦点(选中)的input元素
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
