@@ -51,6 +51,23 @@
             其中 xfail 和 skip 常和 parametrize 混合使用，即作为其中的一个参数
             pytest.mark.parametrize('test_input, expected', [("1+2", 3), ("3+4", 7),
             pytest.param("5+6", 12, marks=pytest.mark.xfail)
+            test_user_data=['linda','sai','tom']
+
+            ‘’‘
+            @pytest.fixture(scope='module')
+            def login(request):
+                user = request.param
+                print('打开首页登陆%s'%user)
+                return user
+
+
+            # indirect=True是把login当作函数去执行
+            @pytest.mark.parametrize('login', test_user_data, indirect=True)
+            def test_cart(login):
+                usera = login
+                print('不同用户添加购物车%s'%usera)
+                assert usera != ''
+            ’‘’
         5. pytest.mark.filterwarnings('ignore:warning info')
            主要用例处理被测功能的warning信息。如报warning该怎么处理，因为pytest虽然不会报用例fail，但会显示 warning
      pytestmark 全局变量：
@@ -59,19 +76,59 @@
 
         ！! mark相关的示例见 test_mark.py
 
-四、pass
+四、输出测试报告
+    1. pytest-html 第三方插件
+        pytest -v -s --html=report.html
+        注意！ 这样 css 样式是独立的，如果要邮件分享报告可以使用 --self-contained-html 将 css 合并到 html中
+    2. allure2 可以和Jenkins配合使用
+         除了安装 allure ，如何要和pytest配合使用还需要安装allure-pytest
+         pytest --alluredir=/tmp/my_allure_results 生成 allure 报告
+         allure serve /tmp/my_allure_results 开启web显示
+         allure generate /tmp/my_allure_results -o  存放目录   输出报告文件 （这个需要本地搭建网站查看）
+         即 cd 到报告所在的目录，然后执行 python -m http.server 开启一个小型服
+    3. 命令行 pytest --junitxml=path
 
 、命令行参数
     -v 输出详细信息
     -s 输出print或logging信息
     -q 输出简单的执行信息
-    --capture=no 实时显示执行信息
+    --capture=no 实时输出log信息
 、其他
     1、处理被测功能抛异常的情况
     pytest.raises(ErrorType, match=regex)
 
     2、自定义标记mark只执行部分用例
-        pytest.mark.webtest / 命令行 -v “webtest”  并且支持逻辑上的 and not or
+       首先需要在 pytest.ini 文件中注册自定义的marker
+       [pytest]
+        markers=
+            webtest: test for web
+            android: test for android
+            ios: test for ios
+
+        使用 pytest --markers 可以查看是否注册成功
+        如果要指定执行被 @pytest.mark.webtest 标记的测试用例，命令行使用 pytest -m webtest xx.py, 也支持逻辑 and or not
+         pytest -m "not webtest" xx.py
+         pytest -m "webtest or ios" xx.py
+
+    3. 命令行 -k 用例名关键字 可以匹配测试用例名来指定执行部分测试用例
+       如： pytest -v -k "ios or webtest" test_mark.py
+            test_mark.py::test_web PASSED                                                                                                                                                        [ 50%]
+            test_mark.py::test_ios PASSED
+
+    4. 调整测试用例的执行顺序 pytest-ordering 第三方插件
+        @pytest.mark.last/@pytest.mark.run(order=1)
+
+    5. 用例遇到错误停止执行 -x 参数 以及 --maxfail=n 最多遇到 n 个错误的时候停止执行
+    6. 当用例执行失败后重新运行 第三方插件 pytest-rerunfailures 可以指定失败后重跑几次以及中间间隔多少秒再重跑
+       pytest -v --rerun 3 --rerun-delay 3  遇到失败后重跑3次，每次中间间隔3秒
+    7. 多条断言报错继续执行，pytest-assume 第三方插件
+        使用 pytest.assume(xxx) 代替 assert xxx，即便是某个断言报错也不会影响后续断言的执行。
+    8. 并发执行用例，pytest-xdist 第三方插件
+       命令行使用 -n 指定并发数量。如 pytest -n 3 test_demo.py 指定并发数为 3
+
+    9. 插件 pytest—timeout： pytest --timeout=10 xxx.py 为测试用例限制执行时间
+       插件 pytest-repeat: pytest --count=2 xxx.py 重复执行测试用例
+
 """
 import pytest
 

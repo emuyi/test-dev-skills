@@ -56,7 +56,32 @@ def test_six():
 
 
 # 自定义标记mark执行部分用例
-
 @pytest.mark.webtest
 def test_web():
     assert 1
+
+
+@pytest.mark.ios
+def test_ios():
+    assert 1
+
+
+# 参数化
+test_user_data=['linda','sai','tom']
+
+
+@pytest.fixture(scope='module')
+def login(request):
+    user = request.param
+    print('打开首页登陆%s'%user)
+    return user
+
+
+# indirect=True是把login当作函数去执行
+@pytest.mark.parametrize('login', test_user_data, indirect=True)
+def test_cart(login):
+    usera = login
+    print('不同用户添加购物车%s'%usera)
+    assert usera != ''
+
+
