@@ -51,6 +51,7 @@
             其中 xfail 和 skip 常和 parametrize 混合使用，即作为其中的一个参数
             pytest.mark.parametrize('test_input, expected', [("1+2", 3), ("3+4", 7),
             pytest.param("5+6", 12, marks=pytest.mark.xfail)
+            
             test_user_data=['linda','sai','tom']
 
             ‘’‘
