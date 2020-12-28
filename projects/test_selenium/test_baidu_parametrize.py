@@ -1,0 +1,35 @@
+"""
+不能把 parameterized 简单的理解成把测试用例的数据做参数然后传给它，因为传参的形式测的是一个用例
+但传参的目的是要测试多种情况，理应是多个测试用例。
+参数化的百度搜索
+"""
+import pytest
+from selenium import webdriver
+
+
+@pytest.fixture
+def driver():
+    driver = webdriver.Chrome()
+    yield driver
+    driver.quit()
+
+
+@pytest.fixture
+def baidu_search(request, driver):
+    driver.maximize_window()
+    driver.implicitly_wait(2)
+    driver.get('https://www.baidu.com/')
+    driver.find_element_by_id('kw').send_keys(request.param)
+    driver.find_element_by_id('su').click()
+    return driver.find_element_by_class_name('nums_text').text
+
+
+class TestBaidu:
+    @pytest.mark.parametrize('baidu_search', ['selenium', 'pytest', 'parameterized'], indirect=True)
+    def test_search(self, baidu_search):
+        assert '相关结果' in baidu_search
+
+
+
+
+
