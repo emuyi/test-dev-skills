@@ -10,7 +10,8 @@ from selenium import webdriver
 data = ['selenium', 'pytest', 'parameterized']
 
 
-@pytest.fixture
+# !!!!!!!!!!!!!!!! 如果这里不加 scope 会怎么样？
+@pytest.fixture(scope='class')
 def driver():
     driver = webdriver.Chrome()
     yield driver
@@ -19,12 +20,10 @@ def driver():
 
 @pytest.fixture
 def baidu_search(request, driver):
-    driver.maximize_window()
-    driver.implicitly_wait(2)
     driver.get('https://www.baidu.com/')
     driver.find_element_by_id('kw').send_keys(request.param)
     driver.find_element_by_id('su').click()
-    time.sleep(1)
+    time.sleep(2)
     return request.param, driver.title
 
 
