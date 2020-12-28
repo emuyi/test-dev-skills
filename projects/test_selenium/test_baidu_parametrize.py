@@ -4,7 +4,10 @@
 参数化的百度搜索
 """
 import pytest
+import time
 from selenium import webdriver
+
+data = ['selenium', 'pytest', 'parameterized']
 
 
 @pytest.fixture
@@ -21,13 +24,15 @@ def baidu_search(request, driver):
     driver.get('https://www.baidu.com/')
     driver.find_element_by_id('kw').send_keys(request.param)
     driver.find_element_by_id('su').click()
-    return driver.find_element_by_class_name('nums_text').text
+    time.sleep(1)
+    return request.param, driver.title
 
 
 class TestBaidu:
-    @pytest.mark.parametrize('baidu_search', ['selenium', 'pytest', 'parameterized'], indirect=True)
+    @pytest.mark.parametrize('baidu_search', data, indirect=True)
     def test_search(self, baidu_search):
-        assert '相关结果' in baidu_search
+        expected, result = baidu_search
+        assert expected in result
 
 
 
