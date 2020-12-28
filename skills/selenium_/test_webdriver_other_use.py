@@ -1,11 +1,16 @@
 import pytest
 import time
+import os
+import pyautogui
 from selenium import webdriver
+from selenium.webdriver import TouchActions   # 移动设备（appium）
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import UnexpectedAlertPresentException
 
 
 @pytest.fixture
@@ -131,7 +136,94 @@ def test_file_upload(driver):
     time.sleep(5)
 
 
+# 文件的下载(需要进行配置)
+def test_file_download(driver):
+    options = webdriver.ChromeOptions()
+    prefs = {
+        'profile.default_content_settings.popups': 0,
+        'download.default_directory': os.getcwd()
+    }
+    options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(options=options)
+    driver.get('https://npm.taobao.org/mirrors/chromedriver/70.0.3538.16/')
+    driver.find_element_by_link_text('chromedriver_win32.zip').click()
 
 
+# 操作cookie
+def test_cookies(driver):
+    driver.maximize_window()
+    driver.get('https://www.baidu.com/')
 
+    driver.add_cookie({'name': 'foo', 'value': 'bar'})
+    print(driver.get_cookies())
+    print(driver.get_cookie('foo'))
+    driver.delete_cookie('foo')
+    print(driver.get_cookie('foo'))
+    # driver.delete_all_cookies()
+
+
+# 调用 js
+def test_scroll_window_by_js(driver):
+    driver.set_window_size(800, 600)
+    driver.get('https://www.baidu.com/')
+    driver.execute_script('window.scroll(200, 300);')
+
+
+# 测试 html5 视频 video 标签
+def test_html5_video(driver):
+    driver.maximize_window()
+    driver.implicitly_wait(5)
+    driver.get('https://www.bilibili.com/video/BV1Mh411f7dZ?spm_id_from=333.851.b_7265706f7274466972737431.12')
+    video = driver.find_element_by_tag_name('video')
+    # 返回播放的视频地址
+    print(driver.execute_script('return arguments[0].currentSrc;', video))
+    # 播放视频
+    driver.execute_script('arguments[0].play();', video)
+    time.sleep(15)
+    print('volume1 %s' % driver.execute_script('return arguments[0].volume;', video))   # 百分比
+    print('time1 %s' % driver.execute_script('return arguments[0].currentTime;', video))  # 秒级别的
+    driver.execute_script('arguments[0].currentTime + 20;', video)
+    print('time2 %s' % driver.execute_script('return arguments[0].currentTime;', video))  # 秒级别的
+    # 暂停视频
+    driver.execute_script('arguments[0].pause();', video)
+    time.sleep(5)
+
+
+# 滑动解锁
+def test_slide_unlock(driver):
+    driver.maximize_window()
+    driver.implicitly_wait(2)
+    driver.get('https://www.helloweba.net/demo/2017/unlock/')
+    ele_slide = driver.find_element_by_css_selector('.bar1 > .slide-to-unlock-handle')
+    mouse = ActionChains(driver)
+    mouse.click_and_hold(ele_slide).perform()  # 按住左键不放下
+    for i in range(200):
+        try:
+            mouse.move_by_offset(20, 0).perform()
+        except UnexpectedAlertPresentException:
+            break
+        time.sleep(1)
+    # mouse.reset_actions()
+    assert 'unlock' in driver.switch_to.alert.text
+
+
+def test_touch_action():
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('w3c', False)
+    driver = webdriver.Chrome(options=options)
+    driver.maximize_window()
+    driver.implicitly_wait(2)
+    driver.get('https://www.jq22.com/yanshi4976')
+    ele_iframe = driver.find_element_by_id('iframe')
+    driver.switch_to.frame(ele_iframe)
+    driver.find_element_by_id('appDate').click()
+
+    # print(driver.find_elements_by_css_selector('.dwl'))
+    year, month, day = driver.find_elements_by_class_name('dwwo')
+    touch = TouchActions(driver)
+    touch.scroll_from_element(year, 0, 5).perform()
+    touch.scroll_from_element(month, 0, 30).perform()
+    touch.scroll_from_element(day, 0, 30).perform()
+    time.sleep(5)
+    driver.quit()
 

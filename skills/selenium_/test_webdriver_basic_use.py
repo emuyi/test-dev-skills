@@ -35,12 +35,12 @@
         b. 鼠标操作 ActionChains
             from selenium.webdriver import ActionChains
 
-            ActionChains(driver).move_to_element(element)
+            ActionChains(driver).move_to_element(element) # move_to_element_with_offset/move_by_offset
             ActionChains(driver).click(element)
             ActionChains(driver).double_click(element)
             ActionChains(driver).context_click(element)
             ActionChains(driver).drag_and_drop(source_ele, target_ele)
-            perform() 提交动作
+            一定要记得用最后用 perform() 提交动作
         c. 键盘操作 Keys 支持常用的键盘按键和组合键
             from selenium.webdriver.common.keys import Keys
             send_keys('selenium')
@@ -48,7 +48,7 @@
             send_keys(Keys.CONTROL, 'c') ....
             send_keys(Keys.F1)......
     3. 查看元素属性
-        found_element.size / found_element.text / found_element.get_attribute(name) / found_element.is_selected() .....
+        found_element.size / found_element.text / found_element.get_attribute(name) / found_element.is_display() .....
 四、常用的断言点
     可以通过比较前后web页面的 title， url，text等信息来作为断言点
     driver.title 网页标题
@@ -114,7 +114,7 @@
     WebDriver 提供了专门的 Select 类来处理下拉框(select标签)
     from selenium.webdriver.support.select import Select
 
-    Select(selectElement).select_by_value('10')  # 根据 value 值定位
+    Select(selectElement).select_by_value('10')  # 根据 value属性值定位
     Select(selectElement).select_by_visible_text('每页10条')  # 根据 text 值定位
     Select(selectElement).select_by_index(0) # 根据索引，第一个选项为 0，依次类推。
 
@@ -125,7 +125,52 @@
         2. js，ajax，flash 实现的文件上传
             处理方式：借助autoIt或者win32gui实现上传和下载
     文件下载：
+        主要是要针对不同的浏览器做不同的配置，比如文件下载的目录，禁止下载弹框之类
+        options = webdriver.ChromeOptions()
+        prefs = {
+            'profile.default_content_settings.popups': 0,
+            'download.default_directory': os.getcwd()
+        }
+        options.add_experimental_option('prefs', prefs)
+        driver = webdriver.Chrome(options=options)
+十、 WebDriver 操作 cookie
+    查看：
+        driver.get_all_cookies() [{},{},{}]
+        driver.get_cookie('foo') 查看 name 是 foo 的 cookies记录
+    添加cookie：
+        driver.add_cookie(cookie_dict)  # name 和 value 是必须的
+        cookie_dict: {'domain': 'www.baidu.com', 'httpOnly': False, 'name': 'foo', 'path': '/', 'secure': True, 'value': 'bar'}
+    删除cookie：
+        driver.delete_cookie('foo') 删除 name 是 foo 的 cookie
+        driver.delete_all_cookies() 删除所有的 cookie
+十一、调用 js
+      WebDriver 不是万能的，比如不能滑动 web 窗口，这时可以配合 js 代码使用
+     driver.execute_script(js_code)
 
+十二、测试 HTML5 视频(video标签)
+     通过调用js:
+        # arguments 是一个对应于传递给函数的参数的类数组对象。这里的 arguments[0] == videoElement
+        driver.execute_script('return arguments[0].currentSrc;', videoElement)  当前播放视频来源
+        driver.execute_script('arguments[0].play();', videoElement)  播放
+        driver.execute_script('arguments[0].pause();', videoElement) 暂停
+
+        driver.execute_script('return arguments[0].currentTime;', videoElement) 当前视频播放时间
+        driver.execute_script('return arguments[0].volume;', videoElement)  音量
+        driver.execute_script('arguments[0].load();', videoElement)  加载
+十三、滑动解锁&选择日期
+    要用到 ActionChains 操作
+    滑动解锁
+        1.定位到 滑动块 元素
+        2. ActionChain.click_and_hold().perform()
+        3. ActionChain.move_by_offset(x,y).perform()
+        4. 注意处理 UnexpectedAlertPresentException 异常
+    选择日期
+        1. 使用 ActionChains
+        2. 使用 TouchActions (work like ActionChains)
+
+十四、
+    driver.save_screenshot() 保存截图
+    driver.close() Closes the current window.
 
 """
 import pytest
