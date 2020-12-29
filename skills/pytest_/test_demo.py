@@ -124,9 +124,12 @@
        pytest -v --rerun 3 --rerun-delay 3  遇到失败后重跑3次，每次中间间隔3秒
     7. 多条断言报错继续执行，pytest-assume 第三方插件
         使用 pytest.assume(xxx) 代替 assert xxx，即便是某个断言报错也不会影响后续断言的执行。
-    8. 并发执行用例，pytest-xdist 第三方插件
-       命令行使用 -n 指定并发数量。如 pytest -n 3 test_demo.py 指定并发数为 3
-
+    8. 并发执行用例，
+        pytest-parallel；命令行使用 --tests-per-worker auto
+       --tests-per-worker 用来指定线程数，auto表示自动分配。
+       pytest-xdist：命令行使用 -n 指定cup核数。
+       如 pytest -n 3 test_demo.py 指定并发数为 3
+       但是要注意！！！对于 ui 测试，并发跑用例可能会出现不可控的问题，要谨慎使用。
     9. 插件 pytest—timeout： pytest --timeout=10 xxx.py 为测试用例限制执行时间
        插件 pytest-repeat: pytest --count=2 xxx.py 重复执行测试用例
 
