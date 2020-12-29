@@ -35,7 +35,7 @@ username = ['ellen', 'hank', 'bobby', 'paige']
 # 创建数据库连接
 connection = pymysql.connect(host='localhost',
                              user='root',
-                             passwd='123456',
+                             passwd='xxx',
                              db='test',
                              cursorclass=pymysql.cursors.DictCursor)
 try:
