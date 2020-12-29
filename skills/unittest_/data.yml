@@ -1,0 +1,13 @@
+# 不太合适，对解析造成困难
+#-
+#  case1:
+#    - search_key: "1"
+#-
+#  case2:
+#    - search_key: "2"
+
+-
+  search_key: "1"
+
+-
+  search_key: "2"
