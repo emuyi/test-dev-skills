@@ -2,8 +2,8 @@
 工作原理：
     1、Appium 的工作原理和 selenium 很类似，不过是将 WebDriver 换成了 Appium Server，同样是
     测试脚本(client) 向 Appium Server 发送请求，Server 接受到请求后解析请求并操作移动设备或者模拟器
-    然后将结果 response。
-    2、appium  API 是在支持 selenium API 基础上又进行了扩展，如 appium 的 command 直接 webdriver 的 Remote
+    然后将操作结果 response。
+    2、appium  API 是在支持 selenium API 基础上又进行了扩展，如 appium 的 command 直接是对 webdriver 的 Remote
     Connection._commands 这个属性字典进行赋值扩展处理。
 
 基本用法：
