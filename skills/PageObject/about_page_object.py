@@ -29,6 +29,8 @@
     Need not represent an entire page                                  # 没必要给整个页面建模
     Different results for the same action are modelled as different methods     # 同一个功能，但结果不同，应当分成两个方法
 
+   具体示例：simple_po 请尽量根据 simple_po 模式来设计 !!!!!!!
+
 
 三、Poium 是基于 Selenium/Appium Page Object 测试库，最大的特点就是简化了 Page 层元素的定义
 
