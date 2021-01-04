@@ -19,8 +19,18 @@
 
     具体示例：base_page.py / bing_page.py / test_bing_search.py
 
-二、Poium 是基于 Selenium/Appium Page Object 测试库，最大的特点就是简化了 Page 层元素的定义
-    !!!! 源码写的很有意思哈，没事多看看，学学人家的设计思路。!!!!
+
+二、补充 Page 设计的原则【根据实际来，PO本质上其实就是对业务的高度抽象】
+
+    The public methods represent the services that the page offers     # Page 关注的是一个页面提供的功能而不是操作细节
+    Try not to expose the internals of the page                        # Page 应当隐藏定位细节
+    Generally don't make assertions                                    # Page 中不应当出现断言
+    Methods return other PageObjects                                   # 如首页上会提供很多的快捷入口，那么测试 index_page的时候，可以直接返回对应的入口的PO
+    Need not represent an entire page                                  # 没必要给整个页面建模
+    Different results for the same action are modelled as different methods     # 同一个功能，但结果不同，应当分成两个方法
+
+
+三、Poium 是基于 Selenium/Appium Page Object 测试库，最大的特点就是简化了 Page 层元素的定义
 
     使用方式：
         from poium import Page, NewPageElement
@@ -43,7 +53,4 @@
                     bpp.search_button.click()
                     time.sleep(0.5)
                     assert 'Page Object' in bpp.get_title
-
-    相比我们自己的实现的 page object , poium 真正实现了元素定位和操作的分离，本质是用一个描述符对象来接管我们定义的search_input
-    之类的属性。
 """
