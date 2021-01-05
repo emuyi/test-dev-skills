@@ -2,10 +2,10 @@
 主测功能如下：
 
     添加成员
-    导入通讯录
-    消息群发
+    导入通讯录(文件上传)
+    消息群发(文件上传、frame切换)
 
-设计如下：[尝试通过chrome debugging mode 复用浏览器来绕过登录]
+设计如下  (尝试通过chrome debugging mode 复用浏览器来绕过登录)
 ```python
 # case 层
 class TestAdmin:
