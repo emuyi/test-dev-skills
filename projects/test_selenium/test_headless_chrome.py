@@ -8,6 +8,7 @@ class TestTesterHome:
     def setup_class(cls):
         options = webdriver.ChromeOptions()
         # todo 开启 debugger 模式
+        # 命令行执行 chrome --remote-debugging-port=9222 注意开启之前要将所有的 chrome 进程干掉
         # options.debugger_address = '127.0.0.1:9222'
         # todo headless chrome
         options.add_argument('--headless')
