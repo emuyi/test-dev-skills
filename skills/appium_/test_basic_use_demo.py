@@ -45,7 +45,15 @@ class TestXueQiu:
             'new UiSelector().text("5小时前").instance(0));')
         self.driver.find_element(*scroll_to_element).click()
 
+    def test_cancel_my_stacks(self):
+        self.driver.find_element(MobileBy.ID, 'tv_search').click()
+        self.driver.find_element(MobileBy.ID, 'search_input_text').send_keys('茅台')
+        self.driver.find_element(By.ID, 'name').click()
+        self.driver.find_element(MobileBy.ID, 'followed_btn').click()
+        follow_btn = (MobileBy.ID, 'follow_btn')
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(follow_btn))
+        assert '加自选' in self.driver.find_element(*follow_btn).text
+
     def teardown(self):
-        pass
-        # time.sleep(10)
-        # self.driver.quit()
+        time.sleep(10)
+        self.driver.quit()
