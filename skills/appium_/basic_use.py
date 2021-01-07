@@ -24,7 +24,7 @@
         'platformVersion': '11',
         'appPackage': 'com.google.android.apps.nexuslauncher',
         'appActivity': 'com.google.android.apps.nexuslauncher.NexusLauncherActivity',
-        'noRest': True,   # 不重置应用
+        'noReset': True,   # 不重置应用
         'udid':'emulator-5554' # 指定执行的设备
         'unicodeKeyboard':true # 支持输入中文
         'restKeyboard': true # 重置输入法
@@ -110,8 +110,6 @@
         element.text 文本来做断言
         根据定位到的 element.get_attribute() 来做断言
         如：resource-id, content-desc, text, class 等 uiautomatorviwer 中显示的都可以获取
-
-
 
 """
 
