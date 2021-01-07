@@ -15,15 +15,22 @@
     二、使用
     from appium import webdriver
 
-    # 配置信息 可参考：https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
+    # 配置信息【!!注意配置项是优化appium性能的一个主要点,下面的链接要经常看】
+    # 参考：https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
     desired_caps = {
         'deviceName': 'Android Emulator',
-        'automationName': 'Appium',
+        'automationName': 'UiAutomator2',
         'platformName': 'Android',
         'platformVersion': '11',
         'appPackage': 'com.google.android.apps.nexuslauncher',
         'appActivity': 'com.google.android.apps.nexuslauncher.NexusLauncherActivity',
-        'noRest': True,
+        'noRest': True,   # 不重置应用
+        'udid':'emulator-5554' # 指定执行的设备
+        'unicodeKeyboard':true # 支持输入中文
+        'restKeyboard': true # 重置输入法
+        'dontStopAppOnReset': true  # 如果为 true 类似于 am start -S 先停止应用在启动应用
+        'skipServerInstallation': true # 如果设备上已经有合适版本的uiautomator2那就不再安装 uiautomator2
+
     }
     ! 注意可以使用 adb shell dumpsys activity | grep(findstr) mCurrentFocus 或
     adb shell dumpsys window | grep(findstr) mCurrentFocus 来获取 appPackage 及 appActivity
@@ -34,13 +41,15 @@
 
 常用 API：
     一、定位控件
-        driver.find_element_by_id()  # resource-id 属性
+        driver.find_element_by_id()    # resource-id 属性
+        driver.find_element_by_xpath()
         driver.find_element_by_accessibility_id()   # Android 里相当于 content-desc 属性
-        # 根据 uiautomator2 语法来定位
+
+        # 根据 uiautomator2 语法来定位 【速度快，但仅限Android】
         # new UiSelector().text("Camera"); .description(); .resourceId();
         driver.find_element_by_android_uiautomator('new UiSelector().text("Camera")')
         driver.find_element_by_class_name()  # class 属性
-        driver.find_element_by_xpath()
+
 
         至于 webdriver 的 find_element_by_name/ by_tag_name/ by_link_text 之类的在 web app 或者混合应用的 WebView（原生 app 中内嵌 web
         网页）中可以使用
@@ -51,6 +60,7 @@
             driver.find_element_by_ios_class_chain()
 
     二、常用操作
+         101！！！ 请务必多翻下 https://appium.io/docs/en/about-appium/intro/ 的 Commands 标签， 介绍的非常全。
         1、 操作应用
             driver.install_app(xx.apk)
             driver.remove_app(packageName)
@@ -86,7 +96,7 @@
             # press 和 move 配合链式操作，实现移动控件以及多点触控的效果 !!!!
             action \
             .press(x=start_x, y=start_y) \
-            .wait(ms=duration) \              等价于 driver.swipe(startX, startY, endX, endY)
+            .wait(ms=duration) \  等价于 driver.swipe(startX, startY, endX, endY)
             .move_to(x=end_x, y=end_y) \
             .release()
              action.perform()
@@ -95,5 +105,13 @@
             driver.lock(5) 锁屏并息屏5s, 5s后自动解锁亮屏，和按锁屏键效果一样
             driver.push_file(devicePath, localPath)       感觉不如 adb push 和 adb pull 好用
             file_content = driver.pull_file(deviceFilePath)
+
+    三、断言
+        element.text 文本来做断言
+        根据定位到的 element.get_attribute() 来做断言
+        如：resource-id, content-desc, text, class 等 uiautomatorviwer 中显示的都可以获取
+
+
+
 """
 

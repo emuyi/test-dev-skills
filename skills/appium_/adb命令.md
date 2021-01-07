@@ -8,7 +8,9 @@ adb 包括：
     2. adb server：PC上的后台进程，通过监听本机的5037端口，来接收 client 的指令，并转发给 adbd【管理 client 和 adbd 之间的通信】
     3. adbd (adb守护进程)：设备上的一个后台进程，会根据收到指令来操作设备。
 adb 的工作原理：
-	adb client 启动后会先检测是否有 adb server进程在运行，没有的话会启动adb server并绑定本地5037的TCP端口，通过该端口与adb client进行通信。同时也会扫描PC连接的设备，一旦发现设备上的 adbd 进程，会在对应的端口进行连接，当 server 与所有的设备建立好连接后，就可以使用adb client来发送指令操作设备。
+	adb client 启动后会先检测是否有 adb server进程在运行，没有的话会启动adb server并绑定本地5037的TCP端口，
+    通过该端口与adb client进行通信。同时也会扫描PC连接的设备，一旦发现设备上的 adbd 进程，会在对应的端口进行连接，
+    当 server 与所有的设备建立好连接后，就可以使用adb client来发送指令操作设备。
     
 使用 adb devices -l 检测设备连接状态 如下：
 # emulator-5554  device  product:sdk_gphone_x86_arm....
