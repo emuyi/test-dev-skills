@@ -36,6 +36,15 @@ class TestXueQiu:
             (By.XPATH, '//*[@text="09988"]/../../..//*[contains(@resource-id, "current_price")]').text
         assert float(stack_price) > 200
 
+    def test_uiselector(self):
+        scroll_to_element = (
+            MobileBy.ANDROID_UIAUTOMATOR,
+            'new UiScrollable('
+            'new UiSelector().scrollable(true).instance(0))'
+            '.scrollIntoView('
+            'new UiSelector().text("5小时前").instance(0));')
+        self.driver.find_element(*scroll_to_element).click()
+
     def teardown(self):
         pass
         # time.sleep(10)
