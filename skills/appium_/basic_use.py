@@ -30,6 +30,8 @@
         'restKeyboard': true # 重置输入法
         'dontStopAppOnReset': true  # 如果为 true 类似于 am start -S 先停止应用在启动应用
         'skipServerInstallation': true # 如果设备上已经有合适版本的uiautomator2那就不再安装 uiautomator2
+        'chromedriverExecutableDir': /xx/xx/ 指定不同版本的 chromedriver 放在一个目录下，appium server 会自动寻找
+        'chromedriverExecutable': 指定特定版本的chromedriver
 
     }
     ! 注意可以使用 adb shell dumpsys activity | grep(findstr) mCurrentFocus 或
