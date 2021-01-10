@@ -41,7 +41,10 @@ desired_caps = dict(
     platformVersion='11',
     appPackage='com.xueqiu.android',
     appActivity='com.xueqiu.android.view.WelcomeActivityAlias',
-    chromedriverExecutableDir=r'D:/android-chromedriver/'
+    chromedriverExecutableDir=r'D:/android-chromedriver/',
+    noReset=True,
+    skipDeviceInitialization=True,
+    skipServerInstallation=True
 
 )
 
@@ -66,6 +69,15 @@ class TestWebView:
         phone = (By.CSS_SELECTOR, '#phone-number')
         WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(phone))
         self.driver.find_element(*phone).send_keys('12345678910')
+
+    def test_execute_script(self):
+        result = self.driver.execute_script('mobile:shell', {
+            'command': 'ps',
+            'args': ['-e', '-f'],
+            'includeStderr': True,
+            'timeout': 5000
+        })
+        print(result.get('stdout'))
 
     def teardown(self):
         self.driver.quit()

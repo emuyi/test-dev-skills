@@ -108,6 +108,18 @@
             driver.push_file(devicePath, localPath)       感觉不如 adb push 和 adb pull 好用
             file_content = driver.pull_file(deviceFilePath)
 
+
+        6. execute_script() 去执行 adb 相关的命令
+            前提是 appium server 启动的时候要加上 --relaxed-security 参数
+
+             result = self.driver.execute_script('mobile:shell', {
+                'command': 'ps',
+                'args': ['-e', '-f'],
+                'includeStderr': True,
+                'timeout': 5000
+            })
+            print(result.get('stdout'))
+
     三、断言
         element.text 文本来做断言
         根据定位到的 element.get_attribute() 来做断言

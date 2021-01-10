@@ -43,6 +43,14 @@ appium server log分析：
        ....
 
 ```
+关于 context 上下文操作的日志
+```python
+ --> POST /wd/hub/session/8dcddad7-1787-467c-b88b-1fad01714c70/context 【switch_to.contenxt()】
+    : 执行 adb shell cat /porc/net/unix  从域套接字中找以 @webview_devtools_remote_xxxx 这样的webview
+    : 执行 adb shell ps xxxx  获取发起这个 webview的进程
+    : 然后内部做拼接，拼接为：WBEVIEW_processName 如：WEBVIEW_com.xueqiu.android
+    : 然后调用 chromedriver 进行类似 selenium 一样的 web 操作。
 
+```
 
 
