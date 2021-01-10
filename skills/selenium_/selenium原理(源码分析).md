@@ -23,5 +23,36 @@
         http://localhost:xxxx/session/$sessionId/url 然后使用 urllib3 的 request 方式像这个 url 发送 post 请求。
         即向浏览器驱动程序发送了一个打开网站的请求。本质上和上面的 start_session 的流程是一样的。
       
+
+# 如何理解 webdriver 协议以及 json wire protocol
+    本质上来讲：webdirver 协议规定了 command，请求方式，请求uri之间的一种映射关系。
+    如 newSession command 对应 post 的请求方式，请求uri是 /session
+    如 get 打开某个网址的 command，对应 post的请求方式，请求 uri 是 /url
+    如 find_element, comand，对应 post的请求方式，请求 uri 是 /element
+
+# 关于 json wire protocol
+     json wire protocol 其实是在 http 协议上对请求以及响应上做了一些其他的规范
+     比如说在相应上增加了一些其他的相应状态
+            7： NoSuchElement
+            
+            11：ElementNotVisible
+            
+            200：Everything OK
+     最重要的是在请求体数据上它是以 json 的格式来构造数据，这也是它为什么支持多种语言的原因。
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
