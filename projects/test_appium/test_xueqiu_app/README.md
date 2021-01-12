@@ -23,9 +23,12 @@ log&test report层：
     - 使用 logging 模块记录执行流程的log并保存为 running_log.txt
     - allure生成测试报告
     
-数据驱动方面(基于yaml)：
+data 数据驱动(基于yaml)：
     - 测试数据的数据驱动
+      因为测试数据驱动需要借助 mark， 所以 yaml 数据的组成得是 [[],[],[]] 的形式
+      TODO:如果做成装饰器直接load file 并 mark 配合，如何做
     - PO执行步骤的数据驱动
+    　 TODO:将PO测试步骤也变成数驱动的意义
     
 utils: 提供一些通用的工具和方法 如 logging class 等
 

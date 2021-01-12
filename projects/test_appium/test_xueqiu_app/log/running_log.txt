@@ -1,3 +1,6 @@
 2021-01-11 21:30:04 [INFO] decorators.py - dont found ('id', 'tv_left')
 2021-01-11 22:43:24 [INFO] decorators.py -  found popup ('id', 'tv_left')
 2021-01-11 22:45:25 [INFO] decorators.py -  found popup ('id', 'tv_left')
+2021-01-12 10:48:44 [INFO] decorators.py -  find popup ('id', 'tv_left')
+2021-01-12 11:00:55 [INFO] decorators.py -  find popup ('id', 'tv_left')
+2021-01-12 11:02:40 [INFO] decorators.py -  find popup ('id', 'tv_left')
