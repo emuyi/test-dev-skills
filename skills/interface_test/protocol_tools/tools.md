@@ -3,7 +3,7 @@
 ##### 1、tcpdump
 
 ```bash
-tcpdump 可以根据其过滤机制来抓取想要的数据包，常使用 -w 将数据写入文件再通过 wireshark 进行分析。
+tcpdump 可以根据一定的过滤机制来抓取想要的数据包，常使用 -w 将数据写入文件再通过 wireshark 进行分析。
 常用参数：
 	host：过滤器，即只获取host指定ip的数据。tcpdump host www.baidu.com 
 	port：过滤器，只获取指定端口的数据
@@ -65,7 +65,7 @@ fiddler 提供的功能和charles类似
 ##### 2、postman
 
 ```shell
-
+如何设置ssl证书：https://www.cnblogs.com/hailongchen/p/9902838.html
 ```
 
 

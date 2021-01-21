@@ -49,7 +49,10 @@ OPTIONS：可以查看服务端的对资源的支持情况，如都支持哪些�
 发送 OPTIONS 做下预检 http://www.ruanyifeng.com/blog/2016/04/cors.html
     
 # GET请求和POST请求的区别
-   todo
+	1、GET常用来获取资源，而POST常用来给服务端发送数据.
+    2、如果GET请求想要携带参数，通常情况下是以查询字符串的形式拼接在url里，而POST通常放在请求体内
+       但这个并不是 HTTP 协议规定的内容，当然GET请求的参数也可以放在请求体中，POST请求的数据塞到URL里
+       但一般情况下大家都不这么用。
 ```
 
 #### 状态码
@@ -83,7 +86,7 @@ OPTIONS：可以查看服务端的对资源的支持情况，如都支持哪些�
 常见的请求头：
 	Host：请求的域名
     Accept：客户端能够接受的内容类型，对应响应头里面的Content-Type
-    Cookie: $Version=1; Skin=new; 发送请求的时候客户端会带着cookies一块请求
+    Cookie: $Version=1; Skin=new; 发送请求的时候客户端会带着cookie一块请求
     Content-Type：post请求指定数据的类型
     常见的类型：application/x-www-form-urlencoded; application/json;multipart/form-data(文件上传)
     Content-Length：post请求数据的长度 (字节)
@@ -102,16 +105,58 @@ OPTIONS：可以查看服务端的对资源的支持情况，如都支持哪些�
 #### SSL加密
 
 ```python
-
-
-http://www.ruanyifeng.com/blog/2016/08/migrate-from-http-to-https.html
+HTTPS = HTTP + 加密 + 认证 + 完整保护
+    加密：指的是双方通信的过程是不是明文，而是经过加密的
+    认证：指的是通信双方对对方都做了一个确认，确认对方都是真实存在且可靠的
+    完整性保护：指的是传输的数据不会再中途被拦截篡改
+本质是：HTTP 的通信接口层套上了一层 SSL 协议的外壳，使原本直接就可以和TCP进行通信变成了先要同SSL通信再由SSL与TCP通信
+加密技术：
+	非对称性加密，即公钥和私钥，公钥是公开的，而私钥是私有的，通过公钥加密的数据，只有通过对应的私钥才能解开。
+	比如：使用本地 git 连接 github的时候获取的公钥和私钥。
+认证：数字证书，用来确认公钥的身份是可信赖的，多数浏览器都会内嵌很多根证书。
+HTTPS的不足点: 加密解密要消耗系统资源，所以在通信效率上不如 HTTP，另外买证书也很贵。
 ```
 
 #### cookie、session、token
 
 ```python
+cookie、session、token 都是处理http协议的是一种无状态协议，不会保存用户会话状态的一种技术手段
 
+cookie：
+	    当用户(指浏览器)首次访问服务端的时候，服务端会将用户状态信息设置cookie(如响应头的set cookie)，发送给用户
+    	用户将cookie保存在本地，以后每次访问都会在请求里携带cookie。
+		
+		#cookie 重要的属性
+         - name=value 设置cookie对应的命令和值，但是必须都得是字符串类型。
+         - domain 指定cookie所属的域名，默认是当前域名
+		 - path 指定cookie在哪个路径下生效，默认是 /
+         - maxAge 失效的时间 单位是 s
+         - expires 过期时间 在设置的时间点后失效
+         - secure 如果 secure 为 true，cookie 只能在https中生效，默认是false
+		 - httpOnly 如果设置了httpOnly，就无法通过js来获取cookie的信息（xss攻击）
+session:
+        session的话，是指用户的相关信息放在服务端保存，当用户登录成功后，会返回一个seesionId，并写入到用户cookie
+        里，稍后用户请求，服务端会从用户的cookie信息里来获取sessionId得知用户身份并进行后续的操作。
+       	session相比着cookie, 由于是保存在服务端所以安全性更高，支持存储的数据类型更广泛，存储能力也更强。
+token:
+    	session 是在服务器上存储用户信息，如果用户请求越来越多，对服务端造成的压力比较大。
+        token的话，是指用户信息不再保存在服务器，而是通过加签处理发送给客户端，由客户端保存。
+        主要的流程是这样的：
+        	用户输入账号密码进行登录，服务端认证通过后，将用户信息通过一些hash算法(sha256)之类的做下加签处理，然后返回
+            给客户端(localstoarge/cookie), 之后客户端的每次请求都会携带token，然后服务器对token进行解密和验证，然后
+            执行后续的操作。
+         token相比着sesion的好处：
+        	1、减轻服务端的存储压力
+            2、便于服务器端业务的扩展，比如说要做负载均衡，要做集群，由于用户访问会自带自己的信息，就不用考虑着扩展的服务器上也
+            考虑保存用户相关的信息
+            3、token可以不用写入到cookie，从而也可以解决跨域请求的问题。
+            	请求头里面携带token
+                	(Authorization: Bearer <token>  JWT）
+参考：https://juejin.cn/post/6844904034181070861
+     http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html
 ```
+
+![image-20210121135156208](C:\Users\MUYI\AppData\Roaming\Typora\typora-user-images\image-20210121135156208.png)
 
 
 
