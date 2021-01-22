@@ -105,7 +105,7 @@ OPTIONS：可以查看服务端的对资源的支持情况，如都支持哪些�
 #### SSL加密
 
 ```python
-HTTPS = HTTP + 加密 + 认证 + 完整保护
+HTTPS = HTTP + 加密 + 认证 + 完整性保护
     加密：指的是双方通信的过程是不是明文，而是经过加密的
     认证：指的是通信双方对对方都做了一个确认，确认对方都是真实存在且可靠的
     完整性保护：指的是传输的数据不会再中途被拦截篡改
@@ -158,5 +158,5 @@ token:
 
 ![image-20210121135156208](C:\Users\MUYI\AppData\Roaming\Typora\typora-user-images\image-20210121135156208.png)
 
-
+https://blog.csdn.net/kongmin_123/article/details/82555936
 
