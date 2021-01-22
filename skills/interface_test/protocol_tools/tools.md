@@ -90,7 +90,7 @@ curl -d @data.txt https://google.com/login
 --data-urlencode 类似-d 区别在于会自动将发送的数据进行 URL 编码长和 -G 配合使用
 -e 设置请求头，请求的来源 即referer
 -F 向服务器上传二进制文件 自动指定 content-type是 *form-data的形式，
-	curl -F 'file=@test.png' taobao.com -v 
+	curl -F 'file=@test.jpg' taobao.com -v 
 	curl -F 'file=@cookies.txt;type=text/plain' taobao.com -v
 	还可以指定上传文件的MIME类型，否则会将文件类设置为application/octet-stream
 -G get请求携带参数
