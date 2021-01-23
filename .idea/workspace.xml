@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0965fb1f-1eb1-4f52-94e5-aec49b3f671a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/skills/interface_test/requests_/basic_use.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/skills/interface_test/requests_/test.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/skills/interface_test/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/skills/interface_test/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/interface_test/requests_/test1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skills/interface_test/protocol_tools/HTTP.md" beforeDir="false" afterPath="$PROJECT_DIR$/skills/interface_test/protocol_tools/HTTP.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/skills/interface_test/protocol_tools/tools.md" beforeDir="false" afterPath="$PROJECT_DIR$/skills/interface_test/protocol_tools/tools.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skills/interface_test/requests_/basic_use.py" beforeDir="false" afterPath="$PROJECT_DIR$/skills/interface_test/requests_/basic_use.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +23,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="ProjectId" id="1nQHqEb05FqZA0QPzNFgV8ZobHZ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -30,8 +39,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/skills/interface_test/requests_" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Learning\test-dev-skills\skills\interface_test\requests_" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Learning\test-dev-skills\skills\interface_test\requests_" />
       <recent name="D:\Learning\test-dev-skills\skills\interface_test" />
@@ -86,5 +99,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
