@@ -35,9 +35,28 @@ docs：https://requests.readthedocs.io/zh_CN/latest/
             cookie，本质是给cookie的domain,path 属性赋值
               jar = requests.cookies.RequestsCookieJar()
               jar.set('name', 'bobby', domain=host.split('//')[-1], path='/cookies')
-2、进阶用法
+2、进阶用法：
+    1、Session() 跨请求保持参数
+    2、r.request --> PreparedRequest
+        # 如以下示例：
+        r = requests.get('https://www.baidu.com')
+        # 用偏底层的写法来写的话
+        s = requests.Session()
+        req = requests.Request('GET', 'https://www.baidu.com')
+        prepped = s.prepare_request(req)
+        # prepped.prepare_body()
+        # prepped.prepare_header()
+        res = s.send(prepped)
+   3、SSL默认是开启，认证失败：verify=CA_path, verify=False(warning)或者证书放在 REQUESTS_CA_BUNDLE 环境变量里
+       内嵌了一套证书，并且还使用了 certifi 第三方库的证书。（注意包的及时更新）
+   4、大文件下载和上传，多文件下载
+        默认是立即下载响应体，stream=True: 开启流式下载，注意事项（with）
+   5、hook response
+   6、OAuth  basic http  oauth, basic http  oauth, custom http oauth(__call__)
+   7、
 
-3、身份认证
+
+3、身份认证：如下
 
 """
 # ===================================快速上手=====================================================
@@ -152,6 +171,8 @@ print(r.status_code)
 # 如果没有设置 timeout 参数，比如要访问网站网络不通，它会夯住，直到底层的urllib3 抛错，如目标计算机拒绝访问之类的
 r = requests.get('https://www.baidu.com')
 print('*' * 200)
+
+
 # ===================================进阶用法=====================================================
 # https://requests.readthedocs.io/zh_CN/latest/user/advanced.html
 
@@ -188,7 +209,7 @@ print(r.request.headers.get('user-agent'))  # <PreparedRequest [GET]>
 
 # ------------------------------------PreparedRequest-------------------------------------------------------
 # https://requests.readthedocs.io/zh_CN/latest/user/advanced.html#prepared-request
-# requests发送的请求都是一个PreparedRequest对象，简单理解PreparedRequest 对象它是一个封装好了请求头，请求数据，cookies等数据
+# requests发送的请求都是一个PreparedRequest对象，简单理解PreparedRequest 对象它是一个封装好了请求头，请求数据，cookies等信息
 # 的请求对象，是对request.get 等请求的偏底层的解释
 """
 requests.get 的源码流程
