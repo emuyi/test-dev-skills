@@ -1,0 +1,5 @@
+test_delete_depart:
+  - {api: query_depart, jsonpath: "$..department[?(@.name=='测试部')]", extract: [size, id]}
+  - {api: delete_depart}
+  - {api: query_depart, extract: size_after}
+  - {assertion: "size_before eq size_after"}

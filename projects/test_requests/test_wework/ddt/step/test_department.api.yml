@@ -1,0 +1,20 @@
+secret: 'xxx'
+
+create_depart:
+    method: post
+    url: 'https://qyapi.weixin.qq.com/cgi-bin/department/create'
+    json: {name: $name, parent_id: $parent_id}
+
+query_depart:
+    method: get
+    url: 'https://qyapi.weixin.qq.com/cgi-bin/department/list'
+
+update_depart:
+    method: post
+    url: 'https://qyapi.weixin.qq.com/cgi-bin/department/update'
+    json: {'id': $id}
+
+delete_depart:
+    method: get
+    url: 'https://qyapi.weixin.qq.com/cgi-bin/department/delete'
+    params:  {'id': $id}
