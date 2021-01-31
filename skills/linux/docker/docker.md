@@ -70,7 +70,7 @@ docker cp 容器id:容器路径 host路径	# 从容器中拷贝文件到主机
 
 简单来说docker镜像是由一层一层的文件系统组成的。比如pull镜像的时候一层一层的下载，build镜像的时候也是一层一层的构建。而这种层级的文件系统被称作联合文件系统。联合文件系统支持把对文件系统的修改作为一次提交来一层一层的叠加。比如在ubuntu容器中执行 apt install vim 等操作，可以通过 docker commit 操作，就可以定制一个携带 vim命令的 unbuntu 镜像。并且如果某层的镜像已经存在，会直接复用该层镜像，而不是再去重新下载或者构建。
 
-docker 镜像的组成，往往会有一个 base image (rootfs: 定义Linux基础目录和命令)，多为各大发行版本，然后在往上一层一层的叠加，最后形成我们的应用。
+docker 镜像的组成，往往会有一个 base image (rootfs: 定义Linux基础目录和命令)，多为各大发行版本，然后在往上一层一层的叠加，最后形成我们的应用镜像。
 
 ![docker_image_layer](docker_image_layer.png)
 
@@ -293,6 +293,7 @@ root@emuyi:~# docker exec -it test01 ping test02
 ping: test02: Name or service not known
 如果容器挂掉又新起了一个，ip就变了，所以这种方式肯定不行。
 
+# 容器互联
 # 2、--link 打通容器间通过容器名进行通信
 docker run --name test03 --link test02 -it ubuntu
 
@@ -316,6 +317,7 @@ ping: test03: Name or service not known
 
 ```shell
 # 网桥的话不使用 docker0 而是使用本地路由
+# 其实定义的时候不需要加参数，docker会自动分配(网桥和ip段)
 docker network create --driver bridge  --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
 
 docker network ls # 可以查看所有的docker网络
@@ -378,18 +380,41 @@ docker-compose.yml
 如何熟练编写 docker-compose.yml？看doc，看开源项目yaml，多编写
 doc：https://docs.docker.com/compose/
 示例：https://docs.docker.com/compose/compose-file/
-
-
-# 实例：部署普罗米修斯 + grafana 性能监控平台
-# 实例：部署selenium grid  selenium docker
-# 实例：部署 testlink 测试用例管理平台
-# 实例：部署 stf 云测平台
+# 实例：部署selenium grid  selenium-docker https://github.com/SeleniumHQ/docker-selenium
+# 实例：部署 testlink 测试用例管理平台 https://hub.docker.com/r/bitnami/testlink
+version: '2'
+services:
+  mariadb:
+    image: 'docker.io/bitnami/mariadb:10.3-debian-10'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_testlink
+      - MARIADB_DATABASE=bitnami_testlink
+    volumes:
+      - '/root/mariadb:/usr/local/mariadb'  # 指定持久化的目录
+  testlink:
+    image: 'docker.io/bitnami/testlink:1-debian-10'
+    ports:
+      - '8010:8080'  # host：container
+      - '443:8443'
+    environment:
+      - TESTLINK_DATABASE_HOST=mariadb
+      - TESTLINK_DATABASE_PORT_NUMBER=3306
+      - TESTLINK_DATABASE_USER=bn_testlink
+      - TESTLINK_DATABASE_NAME=bitnami_testlink
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - '/root/testlink:/usr/local/testlink'
+    depends_on:
+      - mariadb   
+# 实例：部署 stf 云测平台 https://github.com/DeviceFarmer/stf#requirements
+# ！！！如果要是使用 docker swarm做集群，那就得需要docker stack做容器编排
 ```
 
 #### docker swarm（k8s）
 
 ```shell
-TODO
+TODOLIST:  Golang k8s prom + grafana
 ```
 
 
