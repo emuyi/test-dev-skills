@@ -187,6 +187,7 @@ https://python-jenkins.readthedocs.io/en/latest/
 #### Jenkins Pipeline
 
 ```shell
+# 写在前面！如果是比较复杂的项目，请使用Jenkinsflie来构建Pipline job 而不是 web ui的形式，减少维护成本
 doc：https://www.jenkins.io/doc/book/pipeline/
 以上示例都是 jenkins freestyle风格的job(ui界面配置)，如何用脚本的形式如何构建一个jenkins任务
 # 构建一个Pipeline 项目
@@ -220,7 +221,7 @@ pipeline {
         }
         stage('run') {
             steps {
-                sh 'echo run'
+                sh 'echo run'     # !可以使用Jenkins语法生成器协助实现具体的某些操作。
             }
         }
         stage('report') {
@@ -231,16 +232,17 @@ pipeline {
         
     }
 }
-可以使用Jenkins语法生成器协助实现具体的某些操作。如：
-
 # ============================== 如何使用 ==================================
 https://www.jenkins.io/doc/book/pipeline/getting-started/#defining-a-pipeline-in-scm
+1、项目根目录下创建一个 Jenkinsfile 脚本文件
+2、config pipline的时候 Pipeline --> 选择 Pipline script from scm 填写下仓库的信息然后build就可
 ```
 
 #### Blue Ocean
 
 ```shell
-
+doc：https://www.jenkins.io/zh/doc/book/blueocean/getting-started/
+感觉 blue ocean ui 是为了 Pipeline 而生的，其实个人感觉 classic ui 也挺好的，看习惯了...
 ```
 
 
